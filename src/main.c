@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include "../include/Token.h"
 #include "../include/Lexer.h"
+#include "../include/Parser.h"
 
 
 int main(int argc, char* argv[]) {
@@ -23,6 +24,13 @@ int main(int argc, char* argv[]) {
 
         ++lexer.lineNum;
     }
+
+    lexer.source = "___EOF___;";
+    tokenize(&tokenlist, &lexer);
+
+    parser_t parser;
+    init_parser(&parser, tokenlist);
+    parse(&parser);
 
     free(tokenlist.tokens); /* De-allocates tokens. */
     fclose(fp);

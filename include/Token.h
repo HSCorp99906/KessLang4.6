@@ -7,6 +7,7 @@
 typedef enum TokenTypes {
     T_CHAR,
     T_INTEGER,
+    T_EOF,
 } tt_t;
 
 
