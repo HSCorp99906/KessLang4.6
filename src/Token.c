@@ -10,7 +10,16 @@ void init_tokenlist(tokenlist_t* tokenlist, size_t size) {
 
 void add_token(tokenlist_t* tokenlist, token_t element) {
     tokenlist -> size += 6;
-    tokenlist -> tokens = realloc(tokenlist -> tokens, tokenlist -> size);
+    tokenlist -> tokens = realloc(tokenlist -> tokens, sizeof(struct Token) * tokenlist -> size);
     tokenlist -> tokens[tokenlist -> pos] = element;
     ++tokenlist -> pos;
+}
+
+token_t create_token(tt_t type, char character, char* line, unsigned int lineNum) {
+    token_t token;
+    token.type = type;
+    token.character = character;
+    token.line = line;
+    token.lineNumber = lineNum;
+    return token;
 }
