@@ -35,6 +35,7 @@ typedef struct AST_NODE {
 
 
 typedef struct KESS_AST {
+    unsigned int treesize;
     ast_node_t* nodes;
     char* type;
     unsigned short int parseSuccess;

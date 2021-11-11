@@ -2,6 +2,7 @@
 #define KESS_PARSER_H_
 
 #include "Token.h"
+#include "AST.h"
 #include <string.h>
 #include <stdio.h>
 

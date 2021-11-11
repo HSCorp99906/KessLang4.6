@@ -18,10 +18,8 @@ void parse(parser_t* parser) {
     bool_t error = 0;
     unsigned int lparenc = 0;
     unsigned int rparenc = 0;
-<<<<<<< HEAD
     bool_t quote = 0;
-=======
->>>>>>> parent of fd30a5b (Implemented AST.)
+    
 
     while (1) {
         if (parser -> currentToken.type == T_EOF) {
@@ -80,7 +78,11 @@ void parse(parser_t* parser) {
             */
 
             char nameBuf[500];
+            char argBuf[500];
+            unsigned int argBufi = 0;
+
             memset(nameBuf, 0, 500);
+            memset(argBuf, 0, 500);
 
             for (int i = 0; i < strlen(parser -> currentToken.line) && i < 500; ++i) {
                 if (parser -> currentToken.line[i] == '(') {
@@ -90,8 +92,6 @@ void parse(parser_t* parser) {
                 strncat(nameBuf, &parser -> currentToken.line[i], 1);
             }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
             for (int i = strlen(nameBuf) + 2; i < strlen(parser -> currentToken.line); ++i) {
                 if (parser -> currentToken.line[i] == '"' || parser -> currentToken.line[i] == ')') {
                     break;
@@ -100,36 +100,6 @@ void parse(parser_t* parser) {
                 argBuf[argBufi] = parser -> currentToken.line[i];
                 ++argBufi;
             }
-
-            ast_node_t call1node;
-            call1node.type = CALL_EXPRESSION;
-            call1node.property = IDENTIFIER;
-            strcat(call1node.id, nameBuf);
-
-            if (argBufi <= 2) {
-                call1node.args = NULL;
-            } else {
-                call1node.args = (argument_t*)malloc(sizeof(struct Argument) * 2);
-                // ^ BUMP UP THE ALLOCATION SIZE WHEN MORE ARGS.
-                call1node.argc = argBufi - 1;
-                argument_t callarg;
-                callarg.value = argBuf;
-                if (quote) {
-                    callarg.type = LITERAL;
-                } else {
-                    callarg.type = NAME;
-                }
-            }
-
-            __ast.nodes[__ast.pos] = call1node;
-            ++__ast.pos;
-
-=======
-            printf("FUNCTION CALL: %s\n", nameBuf);
->>>>>>> parent of fd30a5b (Implemented AST.)
-=======
-            printf("FUNCTION CALL: %s\n", nameBuf);
->>>>>>> parent of fd30a5b (Implemented AST.)
         }
 
         advance(parser);
