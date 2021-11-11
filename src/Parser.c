@@ -24,8 +24,19 @@ void parse(parser_t* parser) {
             char* __semicolon = strstr(parser -> currentToken.line, ";");
 
             if (!(__semicolon) && parser -> currentToken.line[strlen(parser -> currentToken.line) - 1] != ';') {
+
+                char pointBuf[256];
+
+                for (int i = 0; i < strlen(parser -> currentToken.line); ++i) {
+                    if (i != strlen(parser -> currentToken.line) - 2) {
+                        pointBuf[i] = ' ';
+                    } else {
+                        pointBuf[i] = '^';
+                    }
+                }
+
                 error = 1;
-                printf("ERROR: Missing semicolon on line %d.\n", parser -> currentToken.lineNumber);
+                printf("\033[91m\nERROR: Missing semicolon. \n\n%s\n%s", parser -> currentToken.line, pointBuf);
                 break;
             }
         }
