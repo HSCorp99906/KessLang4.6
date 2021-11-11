@@ -3,6 +3,7 @@
 #include "../include/Token.h"
 #include "../include/Lexer.h"
 #include "../include/Parser.h"
+#include "../include/AST.h"
 
 
 int main(int argc, char* argv[]) {
@@ -30,8 +31,10 @@ int main(int argc, char* argv[]) {
 
     parser_t parser;
     init_parser(&parser, tokenlist);
-    parse(&parser);
+    ast_t __ast = parse(&parser);
+    free_arguments(&__ast);
 
+    free(__ast.nodes);
     free(tokenlist.tokens); /* De-allocates tokens. */
     fclose(fp);
 }

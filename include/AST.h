@@ -28,18 +28,25 @@ typedef struct Argument {
 typedef struct AST_NODE {
     ast_e_types_t type;
     property_t property;
-    char* id;
+    char id[500];
     argument_t* args;
+    size_t argc;
+    unsigned short int argUsed;
 
 } ast_node_t;
 
 
 typedef struct KESS_AST {
     ast_node_t* nodes;
+    size_t treesize;
+    unsigned int pos;
     char* type;
     unsigned short int parseSuccess;
 
 } ast_t;
+
+
+void free_arguments(ast_t* ast);
 
 
 #endif

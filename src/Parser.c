@@ -13,11 +13,17 @@ void advance(parser_t* parser) {
 }
 
 
-void parse(parser_t* parser) {
+ast_t parse(parser_t* parser) {
     typedef unsigned short int bool_t;
     bool_t error = 0;
     unsigned int lparenc = 0;
     unsigned int rparenc = 0;
+
+    ast_t __ast;
+    __ast.type = "program";
+    __ast.treesize = 30;
+    __ast.nodes = (ast_node_t*)malloc(sizeof(struct AST_NODE) * __ast.treesize);
+    __ast.pos = 0;
 
     while (1) {
         if (parser -> currentToken.type == T_EOF) {
@@ -71,7 +77,11 @@ void parse(parser_t* parser) {
             */
 
             char nameBuf[500];
+            char argBuf[500];  // Needs work because multiple arguements.
+            unsigned int argBufi = 0;
+
             memset(nameBuf, 0, 500);
+            memset(argBuf, 0, 500);
 
             for (int i = 0; i < strlen(parser -> currentToken.line) && i < 500; ++i) {
                 if (parser -> currentToken.line[i] == '(') {
@@ -81,9 +91,35 @@ void parse(parser_t* parser) {
                 strncat(nameBuf, &parser -> currentToken.line[i], 1);
             }
 
-            printf("FUNCTION CALL: %s\n", nameBuf);
+            for (int i = strlen(nameBuf) + 2; i < strlen(parser -> currentToken.line); ++i) {
+                if (parser -> currentToken.line[i] == '"' || parser -> currentToken.line[i] == ')') {
+                    break;
+                }
+
+                argBuf[argBufi] = parser -> currentToken.line[i];
+                ++argBufi;
+            }
+
+            ast_node_t call1node;
+            call1node.type = CALL_EXPRESSION;
+            call1node.property = IDENTIFIER;
+            strcat(call1node.id, nameBuf);
+
+            if (argBufi <= 2) {
+                call1node.args = NULL;
+            } else {
+                call1node.args = (argument_t*)malloc(sizeof(struct Argument) * 2);
+                // ^ BUMP UP THE ALLOCATION SIZE WHEN MORE ARGS.
+                call1node.argc = argBufi - 1;
+            }
+
+            __ast.nodes[__ast.pos] = call1node;
+            ++__ast.pos;
+
         }
 
         advance(parser);
     }
+
+    return __ast;
 }
