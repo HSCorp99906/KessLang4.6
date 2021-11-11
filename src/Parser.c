@@ -13,17 +13,15 @@ void advance(parser_t* parser) {
 }
 
 
-ast_t parse(parser_t* parser) {
+void parse(parser_t* parser) {
     typedef unsigned short int bool_t;
     bool_t error = 0;
     unsigned int lparenc = 0;
     unsigned int rparenc = 0;
-
-    ast_t __ast;
-    __ast.type = "program";
-    __ast.treesize = 30;
-    __ast.nodes = (ast_node_t*)malloc(sizeof(struct AST_NODE) * __ast.treesize);
-    __ast.pos = 0;
+<<<<<<< HEAD
+    bool_t quote = 0;
+=======
+>>>>>>> parent of fd30a5b (Implemented AST.)
 
     while (1) {
         if (parser -> currentToken.type == T_EOF) {
@@ -61,6 +59,10 @@ ast_t parse(parser_t* parser) {
             ++rparenc;
         }
 
+        if (parser -> currentToken.type == T_QUOTE) {
+            quote = 1;
+        }
+
         if (parser -> currentToken.character == ';') {
             if (lparenc < rparenc || lparenc > rparenc) {
                 printf("\033[91m\nERROR: Unmatched parenthesis. \n\n%s\n\n", parser -> currentToken.line);
@@ -69,6 +71,7 @@ ast_t parse(parser_t* parser) {
 
             lparenc = 0;
             rparenc = 0;
+            quote = 0;
         }
 
         if (lparenc > 0 && rparenc > 0) {
@@ -77,11 +80,7 @@ ast_t parse(parser_t* parser) {
             */
 
             char nameBuf[500];
-            char argBuf[500];  // Needs work because multiple arguements.
-            unsigned int argBufi = 0;
-
             memset(nameBuf, 0, 500);
-            memset(argBuf, 0, 500);
 
             for (int i = 0; i < strlen(parser -> currentToken.line) && i < 500; ++i) {
                 if (parser -> currentToken.line[i] == '(') {
@@ -91,6 +90,8 @@ ast_t parse(parser_t* parser) {
                 strncat(nameBuf, &parser -> currentToken.line[i], 1);
             }
 
+<<<<<<< HEAD
+<<<<<<< HEAD
             for (int i = strlen(nameBuf) + 2; i < strlen(parser -> currentToken.line); ++i) {
                 if (parser -> currentToken.line[i] == '"' || parser -> currentToken.line[i] == ')') {
                     break;
@@ -111,15 +112,26 @@ ast_t parse(parser_t* parser) {
                 call1node.args = (argument_t*)malloc(sizeof(struct Argument) * 2);
                 // ^ BUMP UP THE ALLOCATION SIZE WHEN MORE ARGS.
                 call1node.argc = argBufi - 1;
+                argument_t callarg;
+                callarg.value = argBuf;
+                if (quote) {
+                    callarg.type = LITERAL;
+                } else {
+                    callarg.type = NAME;
+                }
             }
 
             __ast.nodes[__ast.pos] = call1node;
             ++__ast.pos;
 
+=======
+            printf("FUNCTION CALL: %s\n", nameBuf);
+>>>>>>> parent of fd30a5b (Implemented AST.)
+=======
+            printf("FUNCTION CALL: %s\n", nameBuf);
+>>>>>>> parent of fd30a5b (Implemented AST.)
         }
 
         advance(parser);
     }
-
-    return __ast;
 }

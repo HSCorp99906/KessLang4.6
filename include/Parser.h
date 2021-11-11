@@ -2,7 +2,6 @@
 #define KESS_PARSER_H_
 
 #include "Token.h"
-#include "AST.h"
 #include <string.h>
 #include <stdio.h>
 
@@ -14,7 +13,7 @@ typedef struct Parser {
 
 
 void init_parser(parser_t* parser, tokenlist_t tokenlist);
-ast_t parse(parser_t* parser);
+void parse(parser_t* parser);
 
 
 #endif

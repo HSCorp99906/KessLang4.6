@@ -12,6 +12,7 @@ typedef enum TokenTypes {
     T_RPAREN,
     T_EOS,
     T_END_STATEMENT,
+    T_QUOTE,
 } tt_t;
 
 
