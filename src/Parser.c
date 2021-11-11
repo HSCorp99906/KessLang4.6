@@ -16,6 +16,8 @@ void advance(parser_t* parser) {
 void parse(parser_t* parser) {
     typedef unsigned short int bool_t;
     bool_t error = 0;
+    unsigned int lparenc = 0;
+    unsigned int rparenc = 0;
 
     while (1) {
         if (parser -> currentToken.type == T_EOF) {
@@ -39,6 +41,22 @@ void parse(parser_t* parser) {
                 printf("\033[91m\nERROR: Missing semicolon. \n\n%s\n%s", parser -> currentToken.line, pointBuf);
                 break;
             }
+        }
+
+        if (parser -> currentToken.type == T_LPAREN) {
+            ++lparenc;
+        } else if (parser -> currentToken.type == T_RPAREN) {
+            ++rparenc;
+        }
+
+        if (parser -> currentToken.character == ';') {
+            if (lparenc < rparenc || lparenc > rparenc) {
+                printf("\033[91m\nERROR: Unmatched parenthesis. \n\n%s\n", parser -> currentToken.line);
+                break;
+            }
+
+            lparenc = 0;
+            rparenc = 0;
         }
 
         advance(parser);

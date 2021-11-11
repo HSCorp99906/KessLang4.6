@@ -8,6 +8,10 @@ typedef enum TokenTypes {
     T_CHAR,
     T_INTEGER,
     T_EOF,
+    T_LPAREN,
+    T_RPAREN,
+    T_EOS,
+    T_END_STATEMENT,
 } tt_t;
 
 

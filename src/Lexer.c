@@ -56,7 +56,7 @@ void tokenize(tokenlist_t* tokenlist, lexer_t* lexer) {
                 case 'X':
                 case 'Y':
                 case 'Z':
-                    add_token(tokenlist, create_token(T_CHAR, lexer -> source[i], lexer -> source, lexer -> lineNum)); 
+                    add_token(tokenlist, create_token(T_CHAR, lexer -> source[i], lexer -> source, lexer -> lineNum));
                     break;
                 case '0':
                 case '1':
@@ -69,6 +69,18 @@ void tokenize(tokenlist_t* tokenlist, lexer_t* lexer) {
                 case '8':
                 case '9':
                     add_token(tokenlist, create_token(T_INTEGER, lexer -> source[i], lexer -> source, lexer -> lineNum));
+                    break;
+                case '(':
+                    add_token(tokenlist, create_token(T_LPAREN, lexer -> source[i], lexer -> source, lexer -> lineNum));
+                    break;
+                case ')':
+                    add_token(tokenlist, create_token(T_RPAREN, lexer -> source[i], lexer -> source, lexer -> lineNum));
+                    break;
+                case '\0':
+                    add_token(tokenlist, create_token(T_EOS, lexer -> source[i], lexer -> source, lexer -> lineNum));
+                    break;
+                case ';':
+                    add_token(tokenlist, create_token(T_END_STATEMENT, lexer -> source[i], lexer -> source, lexer -> lineNum));
                     break;
         }
     }
