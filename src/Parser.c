@@ -13,13 +13,17 @@ void advance(parser_t* parser) {
 }
 
 
-void parse(parser_t* parser) {
+ast_t parse(parser_t* parser) {
     typedef unsigned short int bool_t;
     bool_t error = 0;
     unsigned int lparenc = 0;
     unsigned int rparenc = 0;
     bool_t quote = 0;
-    
+    ast_t __ast;
+    __ast.treesize = 10;
+    __ast.nodes = (ast_node_t*)malloc(sizeof(ast_node_t) * __ast.treesize);
+    __ast.type = "Program.";
+
 
     while (1) {
         if (parser -> currentToken.type == T_EOF) {
@@ -104,4 +108,6 @@ void parse(parser_t* parser) {
 
         advance(parser);
     }
+
+    return __ast;
 }

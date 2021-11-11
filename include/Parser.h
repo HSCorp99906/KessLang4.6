@@ -14,7 +14,7 @@ typedef struct Parser {
 
 
 void init_parser(parser_t* parser, tokenlist_t tokenlist);
-void parse(parser_t* parser);
+ast_t parse(parser_t* parser);
 
 
 #endif

@@ -30,8 +30,10 @@ int main(int argc, char* argv[]) {
 
     parser_t parser;
     init_parser(&parser, tokenlist);
-    parse(&parser);
+    ast_t ast = parse(&parser);
 
+    free(ast.nodes);
+    ast.nodes = NULL;
     free(tokenlist.tokens); /* De-allocates tokens. */
     fclose(fp);
 }
