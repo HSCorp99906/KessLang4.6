@@ -18,6 +18,7 @@ ast_t parse(parser_t* parser) {
     bool_t error = 0;
     unsigned int lparenc = 0;
     unsigned int rparenc = 0;
+    bool_t quote = 0;
 
     ast_t __ast;
     __ast.type = "program";
@@ -61,6 +62,10 @@ ast_t parse(parser_t* parser) {
             ++rparenc;
         }
 
+        if (parser -> currentToken.type == T_QUOTE) {
+            quote = 1;
+        }
+
         if (parser -> currentToken.character == ';') {
             if (lparenc < rparenc || lparenc > rparenc) {
                 printf("\033[91m\nERROR: Unmatched parenthesis. \n\n%s\n\n", parser -> currentToken.line);
@@ -69,6 +74,7 @@ ast_t parse(parser_t* parser) {
 
             lparenc = 0;
             rparenc = 0;
+            quote = 0;
         }
 
         if (lparenc > 0 && rparenc > 0) {
@@ -111,6 +117,13 @@ ast_t parse(parser_t* parser) {
                 call1node.args = (argument_t*)malloc(sizeof(struct Argument) * 2);
                 // ^ BUMP UP THE ALLOCATION SIZE WHEN MORE ARGS.
                 call1node.argc = argBufi - 1;
+                argument_t callarg;
+                callarg.value = argBuf;
+                if (quote) {
+                    callarg.type = LITERAL;
+                } else {
+                    callarg.type = NAME;
+                }
             }
 
             __ast.nodes[__ast.pos] = call1node;

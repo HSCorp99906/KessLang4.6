@@ -82,6 +82,8 @@ void tokenize(tokenlist_t* tokenlist, lexer_t* lexer) {
                 case ';':
                     add_token(tokenlist, create_token(T_END_STATEMENT, lexer -> source[i], lexer -> source, lexer -> lineNum));
                     break;
+                case '"':
+                    add_token(tokenlist, create_token(T_QUOTE, lexer -> source[i], lexer -> source, lexer -> lineNum));
         }
     }
 
