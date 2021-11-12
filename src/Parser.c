@@ -15,14 +15,12 @@ void advance(parser_t* parser) {
 
 ast_t parse(parser_t* parser) {
     typedef unsigned short int bool_t;
-    bool_t error = 0;
     unsigned int lparenc = 0;
     unsigned int rparenc = 0;
     bool_t quote = 0;
-
-    bool_t quote = 0;
-
+    
     ast_t __ast;
+    __ast.parseSuccess = 1;
     __ast.treesize = 10;
     __ast.nodes = (ast_node_t*)malloc(sizeof(ast_node_t) * __ast.treesize);
     __ast.type = "Program.";
@@ -48,7 +46,7 @@ ast_t parse(parser_t* parser) {
                     }
                 }
 
-                error = 1;
+                __ast.parseSuccess = 0;
                 printf("\033[91m\nERROR: Missing semicolon. \n\n%s\n%s\n\n", parser -> currentToken.line, pointBuf);
                 break;
             }
@@ -59,6 +57,7 @@ ast_t parse(parser_t* parser) {
         } else if (parser -> currentToken.type == T_RPAREN) {
 
             if (lparenc < 1) {
+                __ast.parseSuccess = 0;
                 printf("\033[91m\nERROR: Syntax error. \n\n%s\n\n", parser -> currentToken.line);
                 break;
             }
@@ -72,6 +71,7 @@ ast_t parse(parser_t* parser) {
 
         if (parser -> currentToken.character == ';') {
             if (lparenc < rparenc || lparenc > rparenc) {
+                __ast.parseSuccess = 0;
                 printf("\033[91m\nERROR: Unmatched parenthesis. \n\n%s\n\n", parser -> currentToken.line);
                 break;
             }
@@ -110,33 +110,11 @@ ast_t parse(parser_t* parser) {
                 ++argBufi;
             }
 
-<<<<<<< HEAD
-            __ast.nodes[__ast.pos].args[0].value = argBuf;
-=======
-            ast_node_t call1node;
-            call1node.type = CALL_EXPRESSION;
-            call1node.property = IDENTIFIER;
-            strcat(call1node.id, nameBuf);
-
             if (argBufi <= 2) {
-                call1node.args = NULL;
             } else {
-                call1node.args = (argument_t*)malloc(sizeof(struct Argument) * 2);
-                // ^ BUMP UP THE ALLOCATION SIZE WHEN MORE ARGS.
-                call1node.argc = argBufi - 1;
-                argument_t callarg;
-                callarg.value = argBuf;
-                if (quote) {
-                    callarg.type = LITERAL;
-                } else {
-                    callarg.type = NAME;
-                }
+                __ast.nodes[__ast.pos].args[0].value = argBuf;
             }
 
-            __ast.nodes[__ast.pos] = call1node;
-            ++__ast.pos;
-
->>>>>>> 7920b83bc92cd1c9d400b3c7abc745d1b79d92b1
         }
 
         advance(parser);
