@@ -18,11 +18,15 @@ ast_t parse(parser_t* parser) {
     bool_t error = 0;
     unsigned int lparenc = 0;
     unsigned int rparenc = 0;
+
     bool_t quote = 0;
+
     ast_t __ast;
     __ast.treesize = 10;
     __ast.nodes = (ast_node_t*)malloc(sizeof(ast_node_t) * __ast.treesize);
     __ast.type = "Program.";
+    __ast.pos = 0;
+    __ast.nodes[__ast.pos].args = (argument_t*)malloc(sizeof(argument_t) * __ast.treesize);
 
 
     while (1) {
@@ -104,6 +108,8 @@ ast_t parse(parser_t* parser) {
                 argBuf[argBufi] = parser -> currentToken.line[i];
                 ++argBufi;
             }
+
+            __ast.nodes[__ast.pos].args[0].value = argBuf;
         }
 
         advance(parser);

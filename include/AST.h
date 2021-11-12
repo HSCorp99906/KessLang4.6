@@ -39,8 +39,12 @@ typedef struct KESS_AST {
     ast_node_t* nodes;
     char* type;
     unsigned short int parseSuccess;
+    unsigned int pos;
 
 } ast_t;
+
+
+void free_nodes(ast_t* ast);
 
 
 #endif
